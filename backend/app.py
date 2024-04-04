@@ -15,6 +15,7 @@ app=Flask(__name__)
 CORS(app)
 # client = MongoClient("mongodb+srv://harshapeshave13:usersample@cluster0.kdqr3xq.mongodb.net/?retryWrites=true&w=majority&ssl=true&appName=Cluster0",tlsCAFile=ca)
 client=MongoClient("mongodb://localhost:27017")
+# client=MongoClient("mongodb+srv://hp641:lenovo@cluster0.7472t9z.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db=client.get_database('temp')
 login_manager=LoginManager(app)
 company=db['company']
@@ -96,8 +97,8 @@ def login():
 
 
 @app.route('/create/Admin',methods=['POST'])  
-@jwt_required() 
-@admin_required  
+# @jwt_required() 
+# @admin_required  
 def admin():
     if request.method=="POST":
         data=request.json
@@ -116,6 +117,53 @@ def admin():
         )
         return jsonify({"status":"Admin created"})
     
+@app.route('/post', methods=["POST"])
+@jwt_required()
+def add_job():
+    data = request.json
+
+    
+    required_fields = ['Name', 'Student_count', 'Salary(LPA)', 'Tech', 'Eligibility', 'Branches']
+    if not all(field in data for field in required_fields):
+        return jsonify({"status": "Missing required fields"}), 400
+
+    
+    company_id =get_jwt_identity()
+    if not company_id:
+        return jsonify({"status": "Company ID is required"}), 400
+    print(company_id)
+
+    
+    c = db.company.find_one({"_id": ObjectId(company_id)})
+    if not c:
+        return jsonify({"status": "Company not found"}), 404
+
+   
+    job_name = data['Name']
+    if job_name in c['Jobs']:
+        return jsonify({"status": "Job with the same name already exists"}), 400
+    c['Jobs'][job_name] = {
+        'Student_count': data['Student_count'],
+        'Salary(LPA)': data['Salary(LPA)'],
+        'Tech': data['Tech'],
+        'Eligibility': data['Eligibility'],
+        'Branches': data['Branches']
+    }
+
+    
+    db.company.update_one({"_id": ObjectId(company_id)}, {"$set": {"Jobs": c['Jobs']}})
+
+    return jsonify({"status": "Job added successfully"}), 201
+
+
+
+@app.route('/')
+
+
+                   
+
+        
+
 
 
 @app.route('/login/Admin',methods=['POST'])
@@ -127,8 +175,8 @@ def login_admin():
         if not name or not password:
             return jsonify({"status":"Missing fields"})
         sample=db.admin.find_one({"Admin name":name})
-        if sample and bcrypt.check_password_hash(sample["Password"],password):
-            token=create_access_token(identity=str(company["_id"]))
+        if sample or bcrypt.check_password_hash(sample["Password"],password):
+            token=create_access_token(identity=str(sample["_id"]))
             return jsonify({"status":f"Logged in as {name}",
                             "token":token})
         else:
