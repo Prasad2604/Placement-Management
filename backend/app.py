@@ -5,6 +5,8 @@ from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity,unset_jwt_cookies,verify_jwt_in_request
 from bson import ObjectId
+from bson.regex import Regex
+import re
 
 import certifi
 ca = certifi.where()
@@ -14,9 +16,9 @@ ca = certifi.where()
 app=Flask(__name__)
 CORS(app)
 # client = MongoClient("mongodb+srv://harshapeshave13:usersample@cluster0.kdqr3xq.mongodb.net/?retryWrites=true&w=majority&ssl=true&appName=Cluster0",tlsCAFile=ca)
-client=MongoClient("mongodb://localhost:27017")
-# client=MongoClient("mongodb+srv://hp641:lenovo@cluster0.7472t9z.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-db=client.get_database('temp')
+# client=MongoClient("mongodb://localhost:27017")
+client=MongoClient("mongodb+srv://hp641:lenovo@cluster0.7472t9z.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+db=client.get_database('db')
 login_manager=LoginManager(app)
 company=db['company']
 admin=db['admin']
@@ -58,7 +60,7 @@ def add():
     
 def admin_required(fn):
     def wrapper(*args, **kwargs):
-        verify_jwt_in_request()  # Verify JWT token presence and validity
+        verify_jwt_in_request()  
         current_user = get_jwt_identity()
         if current_user.get('role') == 'admin':
             return fn(*args, **kwargs)
@@ -116,6 +118,14 @@ def admin():
             }
         )
         return jsonify({"status":"Admin created"})
+
+def check(a,b):
+    company=db.company.find_one({"_id":ObjectId(a)})  
+    if not company:
+        return jsonify({"status":"Company not found"})
+    student=db.users.find_one({"_id":ObjectId(b)})
+    if not student:
+        return jsonify({"status":"Student not found"})
     
 @app.route('/post', methods=["POST"])
 @jwt_required()
@@ -157,7 +167,7 @@ def add_job():
 
 
 
-@app.route('/')
+
 
 
                    
@@ -292,13 +302,35 @@ def update():
 
 @app.route('/companies', methods=['GET'])
 @jwt_required()
-# @admin_required
 def give():
     if request.method == 'GET':
         companies = list(db.company.find())
         for company in companies:
             company['_id'] = str(company['_id'])
         return jsonify(companies)
+    
+@app.route('/companies/search', methods=['GET'])
+# @jwt_required()
+def search():
+    company_name = request.args.get('name')
+
+    if not company_name:
+        return jsonify({"status": "Error", "message": "Company name is missing"}), 400
+
+    regex_pattern = f".*{re.escape(company_name)}.*"
+    regex = Regex(regex_pattern, "i") 
+ 
+    companies = list(db.company.find({"Company name": regex}))
+
+    
+    for company in companies:
+        company['_id'] = str(company['_id'])
+    
+    if not companies:
+        return jsonify({"status": "Error", "message": "Company not found"}), 404
+
+    return jsonify({"status": "Success", "data": companies}), 200
+
 
 @app.route('/update/password',methods=['PUT'])
 @jwt_required()
