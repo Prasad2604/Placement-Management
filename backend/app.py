@@ -76,6 +76,7 @@ def login():
     if request.method == "POST":
         try:
             data = request.json
+<<<<<<< HEAD
             email = data.get('email')
             password = data.get('password')
             print(email,password)
@@ -83,10 +84,20 @@ def login():
                 return jsonify({"message": "Missing credentials"}), 400
 
             company = db.company.find_one({"email": email})
+=======
+            name = data.get('Company name')
+            password = data.get('Password')
+
+            if not name or not password:
+                return jsonify({"status": "Missing credentials"}), 400
+
+            company = db.company.find_one({"Company name": name})
+>>>>>>> 0d11775f675ead5543ac278df6b5ad43e3de876d
 
             if not company:
                 return jsonify({"status": "Company not found"}), 404
 
+<<<<<<< HEAD
             if bcrypt.check_password_hash(company['password'], password):
                 token = create_access_token(identity=str(company["_id"]))
                 return jsonify({"message": f"Logged in as {email}", "token": token}), 200
@@ -102,6 +113,16 @@ def login():
         response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
         response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
         return response
+=======
+            if bcrypt.check_password_hash(company['Password'], password):
+                token = create_access_token(identity=str(company["_id"]))
+                return jsonify({"status": f"Logged in as {name}", "token": token}), 200
+            else:
+                return jsonify({"status": "Invalid credentials"}), 401
+
+        except Exception as e:
+            return jsonify({"status": "Error", "error_message": str(e)}), 500
+>>>>>>> 0d11775f675ead5543ac278df6b5ad43e3de876d
 
 
 
@@ -135,7 +156,11 @@ def check(a,b):
         return jsonify({"status":"Student not found"})
     
 @app.route('/post', methods=["POST"])
+<<<<<<< HEAD
 # @jwt_required()
+=======
+@jwt_required()
+>>>>>>> 0d11775f675ead5543ac278df6b5ad43e3de876d
 def add_job():
     data = request.json
 
@@ -157,9 +182,15 @@ def add_job():
 
    
     job_name = data['Name']
+<<<<<<< HEAD
     if job_name in c['jobs']:
         return jsonify({"status": "Job with the same name already exists"}), 400
     c['jobs'][job_name] = {
+=======
+    if job_name in c['Jobs']:
+        return jsonify({"status": "Job with the same name already exists"}), 400
+    c['Jobs'][job_name] = {
+>>>>>>> 0d11775f675ead5543ac278df6b5ad43e3de876d
         'Student_count': data['Student_count'],
         'Salary(LPA)': data['Salary(LPA)'],
         'Tech': data['Tech'],
@@ -168,7 +199,11 @@ def add_job():
     }
 
     
+<<<<<<< HEAD
     db.company.update_one({"_id": ObjectId(company_id)}, {"$set": {"jobs": c['jobs']}})
+=======
+    db.company.update_one({"_id": ObjectId(company_id)}, {"$set": {"Jobs": c['Jobs']}})
+>>>>>>> 0d11775f675ead5543ac278df6b5ad43e3de876d
 
     return jsonify({"status": "Job added successfully"}), 201
 
@@ -187,12 +222,21 @@ def add_job():
 def login_admin():
     if request.method=="POST":
         data=request.json
+<<<<<<< HEAD
         name=data["name"]
         password=data['password']
         if not name or not password:
             return jsonify({"status":"Missing fields"})
         sample=db.admin.find_one({"Admin name":name})
         if sample and bcrypt.check_password_hash(sample["Password"],password):
+=======
+        name=data["Admin name"]
+        password=data['Password']
+        if not name or not password:
+            return jsonify({"status":"Missing fields"})
+        sample=db.admin.find_one({"Admin name":name})
+        if sample or bcrypt.check_password_hash(sample["Password"],password):
+>>>>>>> 0d11775f675ead5543ac278df6b5ad43e3de876d
             token=create_access_token(identity=str(sample["_id"]))
             return jsonify({"status":f"Logged in as {name}",
                             "token":token})
@@ -201,6 +245,7 @@ def login_admin():
 
 
 
+<<<<<<< HEAD
 @app.route('/register-company', methods=['POST'])
 def register_company():
     data = request.json
@@ -243,6 +288,9 @@ def register_company():
     db.company.insert_one(company)
 
     return jsonify({'message': 'Company registered successfully'}), 201
+=======
+
+>>>>>>> 0d11775f675ead5543ac278df6b5ad43e3de876d
 @app.route('/register/company', methods=['POST'])
 def register():
     if request.method == 'POST':
@@ -349,7 +397,11 @@ def update():
     
 
 @app.route('/companies', methods=['GET'])
+<<<<<<< HEAD
 # @jwt_required()
+=======
+@jwt_required()
+>>>>>>> 0d11775f675ead5543ac278df6b5ad43e3de876d
 def give():
     if request.method == 'GET':
         companies = list(db.company.find())
@@ -422,16 +474,25 @@ def up():
 
 
 
+<<<<<<< HEAD
 @app.route('/single/<string:company_id>',methods=["GET"])
 # @jwt_required()
 def show(company_id):
     if request.method=="GET":
         print(company_id)
         current_user_id=company_id
+=======
+@app.route('/single',methods=["GET"])
+@jwt_required()
+def show():
+    if request.method=="GET":
+        current_user_id=get_jwt_identity()
+>>>>>>> 0d11775f675ead5543ac278df6b5ad43e3de876d
         current_user=db.company.find_one({"_id":ObjectId(current_user_id)})
         if current_user:
             current_user['_id'] = str(current_user['_id'])
             user_info = {
+<<<<<<< HEAD
                 "Company_name": current_user.get("companyName"),
                 "Drive_mode": current_user.get("drive"),
                 "Jobs":current_user.get("jobs")
@@ -439,6 +500,15 @@ def show(company_id):
             return jsonify({
                 "status":"success",
                 "Userinfo":user_info,
+=======
+                "Company name": current_user.get("Company name"),
+                "Drive mode": current_user.get("Drive mode"),
+                "Jobs":current_user.get("Jobs")
+            }
+            return jsonify({
+                "status":"success",
+                "User info":user_info,
+>>>>>>> 0d11775f675ead5543ac278df6b5ad43e3de876d
                 "token":current_user_id
             })
         else:
@@ -468,4 +538,8 @@ if __name__=="__main__":
     
     
 
+<<<<<<< HEAD
     
+=======
+    
+>>>>>>> 0d11775f675ead5543ac278df6b5ad43e3de876d
