@@ -2,9 +2,52 @@ import React, { useEffect,useState } from 'react'
 import { useLocation,Link } from 'react-router-dom'
 import { Button,Label,TextInput } from 'flowbite-react';
 import { FaLinkedin } from 'react-icons/fa';
+import axios from 'axios'; 
 // import {}
 
 export default function CompanyLogin() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'email') {
+      setEmail(value);
+    } else if (name === 'password') {
+      setPassword(value);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/login/company', {
+        email: email,
+        password: password
+      });
+      
+      // Check if response status is OK
+      if (response.status === 200) {
+        // Handle successful login
+        console.log(response.data);
+        window.location.href="/companyhome"
+      }
+    } catch (error) {
+      
+      if (error.response) {
+        
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+    }
+  };
+  
   return (
     <>
     <div className="max-h-screen">
@@ -45,13 +88,16 @@ export default function CompanyLogin() {
             </div>
           </div>
           <div className="flex-1 space-y-4">
-            <form className='flex flex-col gap-5 justify-center items-center'>
+            <form className='flex flex-col gap-5 justify-center items-center' onSubmit={handleSubmit}>
             <div className="max-w-[500px] w-[500px]">
                 <Label value="Your Email"/>
                   <TextInput
                     type="text"
                     placeholder="example@gmail.com"
-                    id="roll"
+                    id="email"
+                    name="email"
+                    value={email}
+                    onChange={handleChange}
                   />
               </div>
               <div className="max-w-[500px] w-[500px]">
@@ -60,13 +106,17 @@ export default function CompanyLogin() {
                     type="password"
                     placeholder="*******"
                     id="password"
+                    name="password"
+                    value={password}
+                    onChange={handleChange}
                   />
               </div>
-            </form>
-            <div className="flex-1 justify-center space-y-2">
+              <div className="flex-1 justify-center space-y-2">
               {/* <h1>OR</h1> */}
-              <Button className='  ml-[47%] hover:bg-white ' gradientDuoTone='pinkToOrange' outline>Login</Button>
+              <Button className='  ml-[47%] hover:bg-white ' gradientDuoTone='pinkToOrange' outline type="submit">Login</Button>
             </div>
+            </form>
+            
             <div className="flex-1 justify-center space-y-2">
               <h1>OR</h1>
               <div className="flex">

@@ -1,9 +1,42 @@
 import React, { useEffect,useState } from 'react'
 import { useLocation,Link } from 'react-router-dom'
 import { Button,Label,TextInput } from 'flowbite-react';
+import axios from "axios"
 
 
 export default function CoordinatorLogin() {
+  const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/login/Admin', {
+                name: username,
+                password: password
+            });
+
+            if (response.status === 200) {
+                
+                console.log(response.data.token)
+                // localStorage.setItem('token', responsetoken);
+            } 
+        }catch (error) {
+      
+          if (error.response) {
+            
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            console.log(error.request);
+          } else {
+            console.log('Error', error.message);
+          }
+        }
+    };
   return (
     <>
     <div className="max-h-screen">
@@ -44,28 +77,32 @@ export default function CoordinatorLogin() {
             </div>
           </div>
           <div className="flex-1 space-y-4">
-            <form className='flex flex-col gap-5 justify-center items-center'>
+            <form className='flex flex-col gap-5 justify-center items-center'onSubmit={handleSubmit}>
             <div className="max-w-[500px] w-[500px]">
-                <Label value="Collage Id"/>
+                <Label value="Username"/>
                   <TextInput
-                    type="text"
-                    placeholder="id-1234"
-                    id="roll"
+                    type="text" 
+                    value={username} 
+                    onChange={(e) => setUsername(e.target.value)} 
+                    placeholder="Enter username" 
                   />
               </div>
               <div className="max-w-[500px] w-[500px]">
                 <Label value="Your password"/>
                   <TextInput
-                    type="password"
-                    placeholder="*******"
-                    id="password"
+                    type="password" 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    placeholder="Enter password" 
                   />
               </div>
-            </form>
-            <div className="flex-1 justify-center space-y-2">
+              
+              <div className="flex-1 justify-center space-y-2">
               {/* <h1>OR</h1> */}
-              <Button className='ml-[47%] ' gradientDuoTone='pinkToOrange' outline>Login</Button>
+              <Button className='ml-[47%] ' gradientDuoTone='pinkToOrange' outline type='submit'>Login</Button>
             </div>
+            </form>
+            
           </div>
         </div>
 

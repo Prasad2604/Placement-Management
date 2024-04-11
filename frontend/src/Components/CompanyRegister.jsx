@@ -2,8 +2,47 @@ import React, { useEffect,useState } from 'react'
 import { useLocation,Link } from 'react-router-dom'
 import { Button,Label,TextInput } from 'flowbite-react';
 import { FaLinkedin } from 'react-icons/fa';
+import axios from "axios"
 
 export default function CompanyRegister() {
+  const [companyName, setCompanyName] = useState('');
+  const [username, setUsername] = useState('');
+  const [drive, setDrive] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/register-company', {
+        name: companyName,
+        username: username,
+        drive: drive,
+        email: email,
+        password: password,
+        confirm: confirm
+      });
+      
+      // Handle response from the server (e.g., registration success or failure)
+      console.log(response.data);
+      // window.location.href='/company'
+    } catch (error) {
+      
+      if (error.response) {
+        
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+    }
+  };
+
   return (
     <>
     <div className="max-h-screen">
@@ -34,44 +73,67 @@ export default function CompanyRegister() {
             
           </div>
           <div className="flex-1 space-y-4">
-            <form className='flex flex-col gap-5 justify-center items-center'>
+            <form className='flex flex-col gap-5 justify-center items-center' onSubmit={handleSubmit}>
             <div className="max-w-[500px] w-[500px]">
                 <Label value="Name of Company"/>
-                  <TextInput
-                    type="text"
-                    placeholder="Company Name"
-                    id="cname"
-                  />
+                <TextInput
+                  type="text"
+                  placeholder="Company Name"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                />
               </div>
               <div className="max-w-[500px] w-[500px]">
                 <Label value="Username"/>
-                  <TextInput
-                    type="text"
-                    placeholder="comapany@123"
-                    id="username"
-                  />
+                <TextInput
+                  type="text"
+                  placeholder="company@123"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+              <div className="max-w-[500px] w-[500px]">
+                <Label value="Drive mode"/>
+                <TextInput
+                  type="text"
+                  placeholder="Hybrid/Online/Offline"
+                  value={drive}
+                  onChange={(e) => setDrive(e.target.value)}
+                />
               </div>
               <div className="max-w-[500px] w-[500px]">
                 <Label value="First Contact Person Email"/>
-                  <TextInput
-                    type="email"
-                    placeholder="example@gmail.com"
-                    id="email"
-                  />
+                <TextInput
+                  type="email"
+                  placeholder="example@gmail.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
               <div className="max-w-[500px] w-[500px]">
-                <Label value="Password (Minimum 8 charecters)"/>
-                  <TextInput
-                    type="password"
-                    placeholder="********"
-                    id="password"
-                  />
+                <Label value="Password (Minimum 8 characters)"/>
+                <TextInput
+                  type="password"
+                  placeholder="********"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </div>
-            </form>
-            <div className="flex-1 justify-center space-y-2">
+              <div className="max-w-[500px] w-[500px]">
+                <Label value="Confirm Password"/>
+                <TextInput
+                  type="password"
+                  placeholder="********"
+                  value={confirm}
+                  onChange={(e) => setConfirm(e.target.value)}
+                />
+              </div>
+              <div className="flex-1 justify-center space-y-2">
               {/* <h1>OR</h1> */}
-              <Button className=' ml-[46%] max-w-[500px]' gradientDuoTone='pinkToOrange' outline>Register</Button>
+              <Button className=' ml-[46%] max-w-[500px]' gradientDuoTone='pinkToOrange' outline type="submit">Register</Button>
             </div>
+            </form>
+            
             <div className="flex-1 justify-center space-y-2">
               <h1>OR</h1>
               <Button className=' ml-[42%] max-w-[500px]' gradientDuoTone='pinkToOrange' outline>
