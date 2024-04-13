@@ -12,6 +12,7 @@ import CompanyRegister from './Components/CompanyRegister'
 import StudentRegister from './Components/StudentRegister'
 import CompanyList from './pages/List'
 import Profile from './pages/profile'
+import PermanentDrawer from './Components/Admin_Dashboard'
 
 
 
@@ -20,6 +21,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
+      <PermanentDrawer />
         <Routes>
           <Route path='/' element={<LandingPage />}></Route>
           <Route path='/signin' element={<SignIn/>} ></Route>
