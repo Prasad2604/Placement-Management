@@ -13,6 +13,7 @@ import StudentRegister from './Components/StudentRegister'
 import CompanyList from './pages/List'
 import Profile from './pages/profile'
 import PermanentDrawer from './Components/Admin_Dashboard'
+import Statistics from './pages/Statistics'
 
 
 
@@ -33,6 +34,8 @@ function App() {
           <Route path='/companies' element={<CompanyList/>}></Route>
           <Route path='/single/:companyId' element={<Profile/>}></Route>
           <Route path='/dev' element={<StickyScrollRevealDemo/>}></Route>
+          <Route path='/stat' element={<Statistics/>}></Route> 
+
         </Routes>
         
       </BrowserRouter>
