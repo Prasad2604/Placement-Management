@@ -8,6 +8,11 @@
  max-width: 60px;   
 }
 
+.logo-drawer{
+  max-height: 85px;
+  max-width: 85px;
+}
+
 @layer base {
     .list {
       list-style-type: none;

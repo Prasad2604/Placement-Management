@@ -123,7 +123,7 @@ const PermanentDrawer = () => {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" noWrap>
-            Permanent Drawer Example
+          <img src="/img/PICT_logo_1.png" alt="Logo" className='logo-drawer'/>
           </Typography>
         </Toolbar>
       </AppBar>
