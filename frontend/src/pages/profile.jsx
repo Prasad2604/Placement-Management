@@ -27,7 +27,6 @@ const Profile = () => {
   return (
     <>
     <div>
-      <PermanentDrawer />
     </div>
     <div className="bg-gray-100 min-h-screen px-4 py-8">
       <div className="container mx-auto max-w-7xl">

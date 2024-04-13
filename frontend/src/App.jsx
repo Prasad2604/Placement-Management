@@ -21,7 +21,6 @@ function App() {
   return (
     <>
       <BrowserRouter>
-      <PermanentDrawer />
         <Routes>
           <Route path='/' element={<LandingPage />}></Route>
           <Route path='/signin' element={<SignIn/>} ></Route>
