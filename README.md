@@ -121,9 +121,6 @@ Once both the frontend and backend servers are running, open your web browser an
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## Contact
-
-For any queries or suggestions, please contact [Prasad Gujar](mailto:gujarprasad2004@gmail.com).
 
 ## Screenshots
 
