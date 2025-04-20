@@ -14,11 +14,11 @@ The Placement Management System is a web-based platform designed to streamline a
 
 ## Tech Stack
 
-- **Frontend:**  
+- **Frontend:**
   - **React.js** – For building a dynamic, responsive user interface that ensures a smooth user experience.
-- **Backend:**  
+- **Backend:**
   - **Flask (Python)** – A lightweight web framework used to build robust APIs and handle the application’s business logic.
-- **Database:**  
+- **Database:**
   - **MongoDB** – A flexible, schema-less database that efficiently stores diverse data structures such as user profiles, job listings, and application details.
 
 ## Project Flow
@@ -26,14 +26,16 @@ The Placement Management System is a web-based platform designed to streamline a
 1. **User Registration and Login:**  
    Users (students, recruiters, placement officers) register and authenticate to access the platform.
 
-2. **Profile Management:**  
+2. **Profile Management:**
+
    - **Students:** Create/update profiles with personal, academic, and extracurricular details.
    - **Recruiters:** Set up company profiles and specify recruitment criteria.
 
 3. **Job Listings:**  
    Recruiters post job openings, and students browse and apply based on their interests and qualifications.
 
-4. **Application Process:**  
+4. **Application Process:**
+
    - **Students:** Apply for jobs and track their application status.
    - **Placement Officers:** Oversee applications and facilitate the selection process.
 
@@ -45,16 +47,18 @@ The Placement Management System is a web-based platform designed to streamline a
 
 ## Challenges and Solutions
 
-- **Data Security and Privacy:**  
-  - **Challenge:** Protecting sensitive user data in a digital environment.  
+- **Data Security and Privacy:**
+
+  - **Challenge:** Protecting sensitive user data in a digital environment.
   - **Solution:** Implemented robust authentication mechanisms and data encryption to ensure data integrity and confidentiality.
 
-- **Scalability:**  
-  - **Challenge:** Handling increasing user traffic and data volume without compromising performance.  
+- **Scalability:**
+
+  - **Challenge:** Handling increasing user traffic and data volume without compromising performance.
   - **Solution:** Leveraged MongoDB’s scalable architecture and optimized backend processes to maintain high performance under load.
 
-- **User Engagement:**  
-  - **Challenge:** Encouraging active participation from all stakeholders.  
+- **User Engagement:**
+  - **Challenge:** Encouraging active participation from all stakeholders.
   - **Solution:** Developed an intuitive UI/UX and integrated real-time notifications to enhance user experience and engagement.
 
 ## Getting Started
@@ -77,23 +81,22 @@ The Placement Management System is a web-based platform designed to streamline a
 2. **Setup the Backend:**
 
    - Navigate to the backend folder (if separated):
-     
+
      ```bash
      cd backend
      ```
-     
+
    - Create a virtual environment and install dependencies:
-     
+
      ```bash
      python -m venv venv
      source venv/bin/activate   # On Windows, use `venv\Scripts\activate`
      pip install -r requirements.txt
      ```
-     
+
    - Configure your MongoDB connection and any other environment variables as needed.
-     
    - Run the Flask server:
-     
+
      ```bash
      python app.py
      ```
@@ -101,13 +104,13 @@ The Placement Management System is a web-based platform designed to streamline a
 3. **Setup the Frontend:**
 
    - Navigate to the frontend folder (if separated):
-     
+
      ```bash
      cd ../frontend
      ```
-     
+
    - Install dependencies and start the development server:
-     
+
      ```bash
      npm install
      npm start
@@ -121,11 +124,8 @@ Once both the frontend and backend servers are running, open your web browser an
 
 This project is open source and available under the [MIT License](LICENSE).
 
-
-## Screenshots
+<!-- ## Screenshots
 
 ![Screenshot 2024-04-22 113440](https://github.com/user-attachments/assets/5442b47d-8676-4155-a457-dc95310be514)
 ![Screenshot 2024-04-22 113520](https://github.com/user-attachments/assets/650e9ee0-1488-4591-9665-e93a706da9e7)
-![Screenshot 2024-04-22 113616](https://github.com/user-attachments/assets/094b066b-9211-4216-9a72-3fe3227bb907)
-
-
+![Screenshot 2024-04-22 113616](https://github.com/user-attachments/assets/094b066b-9211-4216-9a72-3fe3227bb907) -->
