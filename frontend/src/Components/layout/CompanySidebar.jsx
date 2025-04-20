@@ -2,7 +2,7 @@ import { Sidebar } from "flowbite-react";
 import { FaHome, FaBriefcase, FaChartLine, FaUserCircle } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { authService } from "../services/authService";
+import { authService } from "../../services/authService";
 
 export default function CompanySidebar() {
   const location = useLocation();

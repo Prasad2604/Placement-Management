@@ -1,18 +1,33 @@
 import { Sidebar } from "flowbite-react";
-import { FaHome, FaBriefcase, FaChartLine, FaUserCircle } from "react-icons/fa";
+import {
+  FaHome,
+  FaBuilding,
+  FaUserGraduate,
+  FaBriefcase,
+  FaChartLine,
+  FaBell,
+  FaCalendar,
+  FaFileAlt,
+  FaUserCircle,
+} from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { authService } from "../services/authService";
+import { authService } from "../../services/authService";
 
-export default function CompanySidebar() {
+export default function AdminSidebar() {
   const location = useLocation();
   const currentPath = location.pathname.split("/")[2] || "dashboard";
   const user = authService.getCurrentUser();
 
   const navItems = [
     { path: "dashboard", label: "Dashboard", icon: FaHome },
-    { path: "create-job", label: "Create Job Post", icon: FaBriefcase },
-    { path: "jobs", label: "Active Job Openings", icon: FaChartLine },
+    { path: "companies", label: "Companies", icon: FaBuilding },
+    { path: "students", label: "Students", icon: FaUserGraduate },
+    { path: "jobs", label: "Job Postings", icon: FaBriefcase },
+    { path: "placements", label: "Placements", icon: FaChartLine },
+    { path: "notices", label: "Notices", icon: FaBell },
+    { path: "schedule", label: "Schedule", icon: FaCalendar },
+    { path: "reports", label: "Reports", icon: FaFileAlt },
   ];
 
   return (
@@ -24,10 +39,10 @@ export default function CompanySidebar() {
     >
       <div className="p-5 border-b border-gray-200">
         <h1 className="text-xl font-bold text-gray-800 text-center">
-          Company Dashboard
+          Admin Dashboard
         </h1>
         <p className="text-sm text-gray-500 text-center mt-1">
-          Welcome back, {user?.company?.name || "Company"}!
+          Welcome back, {user?.admin?.name || "Admin"}!
         </p>
       </div>
 
@@ -36,7 +51,7 @@ export default function CompanySidebar() {
           <Sidebar.Items>
             <Sidebar.ItemGroup className="flex flex-col gap-2">
               {navItems.map((item) => (
-                <Link to={`/company/${item.path}`} key={item.path}>
+                <Link to={`/admin/${item.path}`} key={item.path}>
                   <motion.div
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -61,19 +76,6 @@ export default function CompanySidebar() {
       </div>
 
       <div className="absolute bottom-0 w-full p-4 border-t border-gray-200">
-        <Link to="/company/profile">
-          <div className="flex items-center space-x-3 px-3 py-2 bg-gray-50 rounded-lg mb-2 hover:bg-gray-100">
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-              <FaUserCircle className="text-blue-600" />
-            </div>
-            <div>
-              <p className="text-sm font-medium text-gray-800">
-                Company Profile
-              </p>
-              <p className="text-xs text-gray-500">Manage your details</p>
-            </div>
-          </div>
-        </Link>
         <div
           className="flex items-center space-x-3 px-3 py-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100"
           onClick={() => authService.logout()}
@@ -83,7 +85,7 @@ export default function CompanySidebar() {
           </div>
           <div>
             <p className="text-sm font-medium text-gray-800">Sign Out</p>
-            <p className="text-xs text-gray-500">Exit company panel</p>
+            <p className="text-xs text-gray-500">Exit admin panel</p>
           </div>
         </div>
       </div>
